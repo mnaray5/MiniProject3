@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP3 Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1> Random Cat Fact and Random Dog</h1>
+    <h3 id = "fact" style = "color:cornflowerblue"></h3>
+    <image id = "img"></image>
+</body>
+</html>
+
+<script>
+    //api_key - b1b767e926b4399c191e6647a278089d
+    //getDog();
+    //http://www.randomnumberapi.com/
+    //google key - AIzaSyAwmFtigB7p9M3YUxUZJl0yp2zoD42Tpg0
+    getTweet();
+    function getDog(){
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url:'https://dog.ceo/api/breeds/image/random',
+            async:false,
+            crossDomain:true,
+
+            complete: function(data){
+                if(data.readyState === 4 && data.status === 200){
+                    GoodBoy = data.responseJSON.message;
+                    console.log(GoodBoy);
+                    document.getElementById("img").src = GoodBoy
+                }
+            }
+        });
+    }
+
+    function getTweet(){
+        lat = '41.8781';
+        lon = '-87.6298';
+        APIkey = 'b1b767e926b4399c191e6647a278089d';
+        units = 'imperial';
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            //url:'https://meowfacts.herokuapp.com/',
+            //https://randomkey.io/random-data-api/ - use zip?
+            url:`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=${units}`,
+            async:false,
+            crossDomain:true,
+
+            complete: function(data){
+                if(data.readyState === 4 && data.status === 200){
+                   // Fact = data.responseJSON.weather[0].description;
+                   Fact = data.responseJSON.main.temp;
+                   console.log(Fact);
+                   document.getElementById("fact").innerHTML = Fact;
+                }
+            }
+        });
+    }
+</script>
