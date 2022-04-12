@@ -1,2 +1,2 @@
-# MiniProject3
+# Project3
 ART 151
