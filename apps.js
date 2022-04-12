@@ -94,7 +94,6 @@ function noteOff(note){
     }
 }
 
- //api_key - b1b767e926b4399c191e6647a278089d
     //getLatLong();
     //http://www.randomnumberapi.com/
     //google key - AIzaSyAwmFtigB7p9M3YUxUZJl0yp2zoD42Tpg0
