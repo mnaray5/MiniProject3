@@ -63,3 +63,15 @@
         });
     }
 </script>
+
+
+
+
+
+
+    //console.log(midiAccess);
+    midiAccess.addEventListener('statechange', updateDevices);
+
+    function updateDevices(event){
+    //console.log(event);
+}

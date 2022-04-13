@@ -1,12 +1,19 @@
+function setup(){
+    createCanvas(0,0);
+}
+
 //console.log(navigator);
-lat = lon = 0;
+lat = lon = 52;
 var canvas = document.getElementById("canvas");
- 
-/* Rresize the canvas to occupy the full page, 
-   by getting the widow width and height and setting it to canvas*/
+var cWidth = cHeight = 0;
+var temp = 0;
  
 canvas.width  = window.innerWidth-15;
+cWidth = canvas.width;
 canvas.height = window.innerHeight-20;
+cHeight = canvas.height;
+
+colors = ['#97E78E','#8EDAE7','#4554CC','#62B2B2','#A873D0','#D073C6','#E848A5','#DA4069'];
 
 
 if(navigator.requestMIDIAccess){
@@ -17,30 +24,20 @@ function failure(){
     console.log("request failed");
 }
 
-function updateDevices(event){
-    //console.log(event);
-}
-
 function success(midiAccess){
-    //console.log(midiAccess);
-    midiAccess.addEventListener('statechange', updateDevices);
+
 
     const inputs = midiAccess.inputs;
     inputs.forEach((input)=>{
-        //console.log(input);
         input.addEventListener('midimessage', handleInput);
     })
 }
 
 function handleInput(input){
-   // console.log(input);
     const command = input.data[0];
     const note = input.data[1];
     const velocity = input.data[2];
 
-    /*console.log(command);
-    console.log(note);
-    console.log(velocity);*/
 
     switch(command){
         case 144:
@@ -56,63 +53,72 @@ function handleInput(input){
     }
 }
 
-function noteOn(note){
+function noteOn(note){    
+    canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
     console.log(`note:${note} //on`);
+    if(note == 99){
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(255, 255, 255)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);    
+        ctx.stroke();
+    }
     if(note >=84 && note <=98){
-        document.getElementById("header").innerHTML = "Green";
-        document.getElementById("header").style = "color: #598859";
-        getLatLong();
-
-    } else if (note <=67 && note >=52){
-        document.getElementById("header").innerHTML = "Pink";
-        document.getElementById("header").style = "color: palevioletred";
         getLatLong();
         getTemp();
+        x = map(temp, -100,120,0, cWidth);
+        ctx.beginPath();
+        myColor = Math.floor(Math.random()*colors.length);
+        ctx.strokeStyle = colors[myColor];
+        ctx.moveTo(x,0);
+        ctx.lineTo(x,cHeight);
+        ctx.stroke();
+    } else if (note <=67 && note >=52){
+        getLatLong();
+        console.log(note + " //ON");
     } else if (note <=51 && note >=36){
-        document.getElementById("header").innerHTML = "Yellow";
-        document.getElementById("header").style = "color: #f4e777";
+        console.log(note + " //ON");
     } else if (note <=83 && note >=68){
-        document.getElementById("header").innerHTML = "Blue";
-        document.getElementById("header").style = "color: cornflowerblue";
-
+        getLatLong();
+        getTemp();
+        x = map(temp, -100,120,0, cWidth);
+        ctx.beginPath();
+        myColor = Math.floor(Math.random()*colors.length);
+        ctx.strokeStyle = colors[myColor];
+        ctx.moveTo(0,x);
+        ctx.lineTo(cWidth,x);
+        ctx.stroke();
     } else {
-        document.getElementById("header").innerHTML = "Node 99 is On";
-        document.getElementById("header").style = "color: teal";
-
+        console.log(note + " //ON");
     }
 }
 
 function noteOff(note){
     console.log(`note:${note} //off`);
     if(note == 99){
-        document.getElementById("header").innerHTML = "Back to Normal: Launch Pad Demo";
-        document.getElementById("header").style = "color: #6dc7c7";
-
+        console.log("RESET");
     } else {
-        document.getElementById("header").innerHTML = "Launch Pad Demo";
-        document.getElementById("header").style = "color: darkorchid";
+        console.log(note + " //OFF");
     }
 }
 
-    //getLatLong();
-    //http://www.randomnumberapi.com/
-    //google key - AIzaSyAwmFtigB7p9M3YUxUZJl0yp2zoD42Tpg0
-    //getTemp();
+
     function getLatLong(){
         $.ajax({
             type: 'GET',
             dataType: 'json',
-            url:'https://random-data-api.com/api/address/random_address',
+           url:'https://random-data-api.com/api/address/random_address',
+            //url:'https://api.3geonames.org/?randomland=yes&json=1',
             async:false,
             crossDomain:true,
 
             complete: function(data){
                 if(data.readyState === 4 && data.status === 200){
-                    lat = data.responseJSON.latitude;
-                    console.log(lat);
-                    lon = data.responseJSON.longitude;
-                    console.log(lon);
                     //console.log(data.responseJSON);
+                    lat = data.responseJSON.latitude;
+                    //console.log(lat);
+                    lon = data.responseJSON.longitude;
+                    //console.log(lon);
                 }
             }
         });
@@ -132,10 +138,8 @@ function noteOff(note){
 
             complete: function(data){
                 if(data.readyState === 4 && data.status === 200){
-                   //Fact = data.responseJSON.weather[0].description;
-                   Fact = data.responseJSON.main.temp;
-                   console.log(Fact);
-                   //document.getElementById("fact").innerHTML = Fact;
+                   temp = data.responseJSON.main.temp;
+                   console.log(temp);
                 }
             }
         });
