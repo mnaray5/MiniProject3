@@ -1,3 +1,4 @@
+let device;
 function setup(){
     createCanvas(0,0);
 }
@@ -13,8 +14,7 @@ cWidth = canvas.width;
 canvas.height = window.innerHeight-20;
 cHeight = canvas.height;
 
-colors = ['#97E78E','#8EDAE7','#4554CC','#62B2B2','#A873D0','#D073C6','#E848A5','#DA4069'];
-
+colors = ['#97E78E','#8EDAE7','#4554CC','#62B2B2','#A873D0','#D073C6','#930909','#DA4069','#FFE534'];
 
 if(navigator.requestMIDIAccess){
     navigator.requestMIDIAccess().then(success,failure);
@@ -28,6 +28,11 @@ function success(midiAccess){
 
 
     const inputs = midiAccess.inputs;
+    for(var output of midiAccess.outputs.values()){
+        device = output;
+        console.log('Output device selected', device);
+    }
+
     inputs.forEach((input)=>{
         input.addEventListener('midimessage', handleInput);
     })
@@ -43,9 +48,7 @@ function handleInput(input){
         case 144:
             if(velocity > 0){
                 noteOn(note);
-            } else {
-                noteOff(note);
-            }
+            } 
             break;    
         //case 128:
          //   noteOff(note);
@@ -62,8 +65,9 @@ function noteOn(note){
         ctx.fillStyle = "rgba(255, 255, 255)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);    
         ctx.stroke();
+        colorAll();
     }
-    if(note >=84 && note <=98){
+    else if(note >=84 && note <=98){
         getLatLong();
         getTemp();
         x = map(temp, -100,120,0, cWidth);
@@ -73,15 +77,35 @@ function noteOn(note){
         ctx.moveTo(x,0);
         ctx.lineTo(x,cHeight);
         ctx.stroke();
+
     } else if (note <=67 && note >=52){
         getLatLong();
-        console.log(note + " //ON");
+        x = map(lat, -90,90,0, cWidth);
+        y = map(lon, -180,180,0, cHeight);
+        ctx.beginPath();
+        myColor = Math.floor(Math.random()*colors.length);
+        ctx.strokeStyle = ctx.fillStyle =  colors[myColor];
+        width = Math.random() * (200 - 20) + 20;
+        height = Math.random() * (200 - 20) + 20;
+        ctx.fillRect(x,y,width,height);
+        ctx.stroke();
+
+        console.log(x,y);
+
+
+
     } else if (note <=51 && note >=36){
+        if(note == 36){
+            clearAll();
+        }
         console.log(note + " //ON");
+       // cColor(82,55);
+
     } else if (note <=83 && note >=68){
+  
         getLatLong();
         getTemp();
-        x = map(temp, -100,120,0, cWidth);
+        x = map(temp, -100,120,0, cHeight);
         ctx.beginPath();
         myColor = Math.floor(Math.random()*colors.length);
         ctx.strokeStyle = colors[myColor];
@@ -90,6 +114,7 @@ function noteOn(note){
         ctx.stroke();
     } else {
         console.log(note + " //ON");
+        clearAll();
     }
 }
 
@@ -107,8 +132,7 @@ function noteOff(note){
         $.ajax({
             type: 'GET',
             dataType: 'json',
-           url:'https://random-data-api.com/api/address/random_address',
-            //url:'https://api.3geonames.org/?randomland=yes&json=1',
+            url:'https://random-data-api.com/api/address/random_address',
             async:false,
             crossDomain:true,
 
@@ -130,8 +154,6 @@ function noteOff(note){
         $.ajax({
             type: 'GET',
             dataType: 'json',
-            //url:'https://meowfacts.herokuapp.com/',
-            //https://randomkey.io/random-data-api/ - use zip?
             url:`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIkey}&units=${units}`,
             async:false,
             crossDomain:true,
@@ -143,4 +165,20 @@ function noteOff(note){
                 }
             }
         });
+    }
+
+    function cColor(key,clr){
+        device && device.send([0x90,key,clr]);
+    }
+
+    function colorAll(){
+        for(let i = 0; i < 100; i++){
+            cColor(i,i);
+        }
+    }
+
+    function clearAll(){
+        for(let i = 0; i < 100; i++){
+            cColor(i,0);
+        }
     }
