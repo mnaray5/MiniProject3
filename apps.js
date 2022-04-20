@@ -2,6 +2,8 @@ let device;
 function setup(){
     createCanvas(0,0);
 }
+minT = -10;
+maxT = 100;
 
 //console.log(navigator);
 lat = lon = 52;
@@ -66,17 +68,20 @@ function noteOn(note){
         ctx.fillRect(0, 0, canvas.width, canvas.height);    
         ctx.stroke();
         clearAll();
+        cColor(99,113);
     }
     else if(note >=84 && note <=98){
         getLatLong();
         getTemp();
-        x = map(temp, -100,120,0, cWidth);
+        if(temp < minT) minT = temp;
+        if(temp > maxT) maxT = temp;
+        x = map(temp, minT,maxT,0, cWidth);
         ctx.beginPath();
         myColor = Math.floor(Math.random()*colors.length);
         ctx.strokeStyle = colors[myColor];
         ctx.moveTo(x,0);
         ctx.lineTo(x,cHeight);
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 6;
         ctx.stroke();
         colorAll(note, 84, 98); //add and x and y parameter
 
@@ -103,6 +108,19 @@ function noteOn(note){
     } //else if (note <=51 && note >=36){
         else if (note >=36 && note <=51 ){
         console.log(note + " //ON");
+        getLatLong();
+        getTemp();
+        x = map(lat, -90,90,0, cWidth);
+        y = map(lon, -180,180,0, cHeight);
+        if(temp < minT) minT = temp;
+        if(temp > maxT) maxT = temp;
+        t = map(temp,minT,maxT, 10, 100)
+        ctx.beginPath();
+        ctx.arc(x, y, t, 0, 2 * Math.PI);
+        myColor = Math.floor(Math.random()*colors.length);
+        ctx.strokeStyle = ctx.fillStyle =  colors[myColor];
+        ctx.fill();
+        ctx.stroke();
         colorAll(note, 36, 51); //add and x and y parameter
 
 
@@ -114,8 +132,10 @@ function noteOn(note){
         ctx.beginPath();
         myColor = Math.floor(Math.random()*colors.length);
         ctx.strokeStyle = colors[myColor];
+        ctx.lineWidth = 6;
         ctx.moveTo(0,x);
         ctx.lineTo(cWidth,x);
+        
         ctx.stroke();
         colorAll(note, 68, 83); //add and x and y parameter
 
@@ -184,7 +204,7 @@ function noteOff(note){
                 cColor(i,x);
             }
         } else {
-            for(let i = s+1; i <= e+1; i = i+2){
+            for(let i = s+1; i <= e; i = i+2){
                 cColor(i,x);
             }
         }
