@@ -14,7 +14,7 @@ cWidth = canvas.width;
 canvas.height = window.innerHeight-20;
 cHeight = canvas.height;
 
-colors = ['#97E78E','#8EDAE7','#4554CC','#62B2B2','#A873D0','#D073C6','#930909','#DA4069','#FFE534'];
+colors = ['#97E78E','#8EDAE7','#4554CC','#62B2B2','#A873D0','#D073C6','#D62626','#DA4069','#FFE534', '#7B2683', '#B8EEE8', '#6BC820'];
 
 if(navigator.requestMIDIAccess){
     navigator.requestMIDIAccess().then(success,failure);
@@ -65,7 +65,7 @@ function noteOn(note){
         ctx.fillStyle = "rgba(255, 255, 255)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);    
         ctx.stroke();
-        colorAll();
+        clearAll();
     }
     else if(note >=84 && note <=98){
         getLatLong();
@@ -76,9 +76,13 @@ function noteOn(note){
         ctx.strokeStyle = colors[myColor];
         ctx.moveTo(x,0);
         ctx.lineTo(x,cHeight);
+        ctx.lineWidth = 5;
         ctx.stroke();
+        colorAll(note, 84, 98); //add and x and y parameter
 
-    } else if (note <=67 && note >=52){
+
+    } //else if (note <=67 && note >=52){
+        else if (note >=52 && note <=67 ){
         getLatLong();
         x = map(lat, -90,90,0, cWidth);
         y = map(lon, -180,180,0, cHeight);
@@ -91,18 +95,19 @@ function noteOn(note){
         ctx.stroke();
 
         console.log(x,y);
+        colorAll(note, 52, 67); //add and x and y parameter
 
 
 
-    } else if (note <=51 && note >=36){
-        if(note == 36){
-            clearAll();
-        }
+
+    } //else if (note <=51 && note >=36){
+        else if (note >=36 && note <=51 ){
         console.log(note + " //ON");
-       // cColor(82,55);
+        colorAll(note, 36, 51); //add and x and y parameter
 
-    } else if (note <=83 && note >=68){
-  
+
+    } //else if (note <=83 && note >=68){
+        else if (note >=68 && note <=83 ){
         getLatLong();
         getTemp();
         x = map(temp, -100,120,0, cHeight);
@@ -112,6 +117,8 @@ function noteOn(note){
         ctx.moveTo(0,x);
         ctx.lineTo(cWidth,x);
         ctx.stroke();
+        colorAll(note, 68, 83); //add and x and y parameter
+
     } else {
         console.log(note + " //ON");
         clearAll();
@@ -171,9 +178,15 @@ function noteOff(note){
         device && device.send([0x90,key,clr]);
     }
 
-    function colorAll(){
-        for(let i = 0; i < 100; i++){
-            cColor(i,i);
+    function colorAll(x, s, e){
+        if(x%2 == 0){
+            for(let i = s; i <= e; i = i+2){
+                cColor(i,x);
+            }
+        } else {
+            for(let i = s+1; i <= e+1; i = i+2){
+                cColor(i,x);
+            }
         }
     }
 
