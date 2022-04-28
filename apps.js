@@ -98,7 +98,7 @@ function handleInput(input){
 var r=confirm("In this page, you will create your own artwork using the launchpad. \nThere are 2 color options:"+
               " utilize the colors of the launchpad buttons, or utilize a set of colors relating to weather temperatures" +
               " and locations!\nSelect 'OK' for launchpad colors, and 'Cancel' for the weather and location set!\nWant to clear you art piece?" +
-              "Use the top right button on the launchpad to clear the screen! Have Fun!");
+              "Use the top right button on the launchpad to clear the screen! Have Fun!!");
 if (r==true)
   {
   opt = 1;
