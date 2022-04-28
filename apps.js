@@ -7,16 +7,7 @@ minT = 0;
 maxT = 110;
 opt = 0;
 
-var r=confirm("In this page, you will create your own artwork using the launchpad. There are 2 color options:"+
- " utilize the colors of the launchpad buttons, or utilize a set of colors of my choosing! Select 'OK' for launchpad colors, and 'Cancel' for my set");
-if (r==true)
-  {
-  opt = 1;
-  }
- else
-  {
-  opt = 0;
-  }
+
 
 //console.log(navigator);
 lat = lon = 52;
@@ -85,10 +76,12 @@ function success(midiAccess){
 }
 
 function handleInput(input){
+    cColor(99,113);
+    
+
     const command = input.data[0];
     const note = input.data[1];
     const velocity = input.data[2];
-    cColor(99,113);
 
 
     switch(command){
@@ -102,9 +95,19 @@ function handleInput(input){
           //  break
     }
 }
-
+var r=confirm("In this page, you will create your own artwork using the launchpad. \nThere are 2 color options:"+
+              " utilize the colors of the launchpad buttons, or utilize a set of colors relating to weather temperatures" +
+              " and locations!\nSelect 'OK' for launchpad colors, and 'Cancel' for the weather and location set!\nWant to clear you art piece?" +
+              "Use the top right button on the launchpad to clear the screen! Have Fun!");
+if (r==true)
+  {
+  opt = 1;
+  }
+ else
+  {
+  opt = 0;
+  }
 function noteOn(note){    
-    cColor(99,113);
     canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     console.log(`note:${note} //on`);

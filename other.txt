@@ -1,4 +1,6 @@
 http://web-tech.ga-usa.com/2012/05/creating-a-custom-hot-to-cold-temperature-color-gradient-for-use-with-rrdtool/index.html
+https://icolorpalette.com/?s=neighborhood&post_type=post&submit=Go
+
 
 <!DOCTYPE html>
 <html lang="en">
