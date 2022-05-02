@@ -42,7 +42,9 @@ landColors = ['#361C11','#A98932','#6D392C','#5DA0AF','#C5CBD4','#3BC4D6','#5B4C
               '#C68051','#8C3716','#867745','#908277','#ECDCA4','#91B4C1','#36440C','#3C5474',
               '#B4ACAC','#AFACAB','#C3D2E4','#CED3DF','#D3DCE4','#585E60','#464C4A','#5A483B',
               '#703C11','#84823F','#A48371','#768285','#4C8484','#5C2C44','#A4B4B7','#CA3E11',
-              '#A95E40','#656D7B','#B47468','#16645A','#9E511A','#7AA6D3']
+              '#A95E40','#656D7B','#B47468','#16645A','#9E511A','#7AA6D3', '#F08080','#FA8072',
+              '#CCCCFF','#D7BDE2','#9B59B6','#76D7C4','#73C6B6','#7DCEA0','#58D68D','#F4D03F',
+              '#DC7633','#F06292','#9575CD','#DCE775']
 
 cQ1 = ['#C2F3FF', '#61EEFF', '#61C7DD', '#61A1B3', '#C2DDFF', '#61C7FF', '#61A1DD', '#6181B3', 
        '#A18CFF', '#6161FF', '#6161DD', '#6161B3', '#CCB3FF', '#A161FF', '#8161DD', '#7661B3', 
@@ -98,7 +100,7 @@ function handleInput(input){
 var r=confirm("In this page, you will create your own artwork using the launchpad. \nThere are 2 color options:"+
               " utilize the colors of the launchpad buttons, or utilize a set of colors relating to weather temperatures" +
               " and locations!\nSelect 'OK' for launchpad colors, and 'Cancel' for the weather and location set!\nWant to clear you art piece?" +
-              "Use the top right button on the launchpad to clear the screen! Have Fun!!");
+              " Use the top right button on the launchpad to clear the screen!\nHave Fun!!");
 if (r==true)
   {
   opt = 1;
