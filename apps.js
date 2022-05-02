@@ -121,7 +121,7 @@ function noteOn(note){
         clearAll();
         cColor(99,114);
     }
-    else if(note >=84 && note <=98){
+    else if(note >=84 && note <=98){ //top right
         getLatLong();
         getTemp();
         if(temp < minT) minT = temp;
@@ -143,7 +143,7 @@ function noteOn(note){
 
 
     }
-        else if (note >=52 && note <=67 ){
+        else if (note >=52 && note <=67 ){//top left
         getLatLong();
         x = map(lat, -90,90,0, cWidth);
         y = map(lon, -180,180,0, cHeight);
@@ -167,7 +167,7 @@ function noteOn(note){
 
 
     } 
-        else if (note >=36 && note <=51 ){
+        else if (note >=36 && note <=51 ){//bottom left
         console.log(note + " //ON");
         getLatLong();
         getTemp();
@@ -195,7 +195,7 @@ function noteOn(note){
 
 
     } //else if (note <=83 && note >=68){
-        else if (note >=68 && note <=83 ){
+        else if (note >=68 && note <=83 ){//bottom right
         getLatLong();
         getTemp();
         if(temp < minT) minT = temp;
